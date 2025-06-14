@@ -1,0 +1,2375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naperville Pickleball Tournament Registration</title>
+    <!-- Add EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-top: -50px;
+        }
+        .logo {
+            margin-bottom: 28px;
+            font-size: 72px;
+            font-weight: bold;
+            width: 90%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .logo span {
+            display: inline-block;
+            position: relative;
+            animation: wave 4s infinite ease-in-out;
+            transform: translateY(0);
+            opacity: 0.85;
+        }
+        @keyframes wave {
+            0%, 5%, 95%, 100% {
+                transform: translateY(0);
+                opacity: 0.85;
+            }
+            47.5%, 52.5% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+        /* Individual character delays for wave effect */
+        .logo span:nth-child(1) { animation-delay: 0.0s; }  /* N */
+        .logo span:nth-child(2) { animation-delay: 0.4s; }  /* a */
+        .logo span:nth-child(3) { animation-delay: 0.8s; }  /* p */
+        .logo span:nth-child(4) { animation-delay: 1.2s; }  /* e */
+        .logo span:nth-child(5) { animation-delay: 1.6s; }  /* r */
+        .logo span:nth-child(6) { animation-delay: 2.0s; }  /* v */
+        .logo span:nth-child(7) { animation-delay: 2.4s; }  /* i */
+        .logo span:nth-child(8) { animation-delay: 2.8s; }  /* l */
+        .logo span:nth-child(9) { animation-delay: 3.2s; }  /* l */
+        .logo span:nth-child(10) { animation-delay: 3.6s; } /* e */
+        .logo span:nth-child(11) { animation-delay: 4.0s; } /* space */
+        .logo span:nth-child(12) { animation-delay: 4.4s; } /* P */
+        .logo span:nth-child(13) { animation-delay: 4.8s; } /* i */
+        .logo span:nth-child(14) { animation-delay: 5.2s; } /* c */
+        .logo span:nth-child(15) { animation-delay: 5.6s; } /* k */
+        .logo span:nth-child(16) { animation-delay: 6.0s; } /* l */
+        .logo span:nth-child(17) { animation-delay: 6.4s; } /* e */
+        .logo span:nth-child(18) { animation-delay: 6.8s; } /* b */
+        .logo span:nth-child(19) { animation-delay: 7.2s; } /* a */
+        .logo span:nth-child(20) { animation-delay: 7.6s; } /* l */
+        .logo span:nth-child(21) { animation-delay: 8.0s; } /* l */
+
+        .logo .blue { color: #4285F4; }
+        .logo .red { color: #EA4335; }
+        .logo .yellow { color: #FBBC05; }
+        .logo .green { color: #34A853; }
+        
+        .logo .space {
+            margin: 0 20px;
+            display: inline-block;
+        }
+        
+        .register-section {
+            text-align: center;
+            margin: 30px auto;
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .shortcuts {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+
+        .search-buttons {
+            margin-top: 30px;
+        }
+        .search-button {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+            border-radius: 4px;
+            color: #3c4043;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            margin: 11px 4px;
+            padding: 0 16px;
+            line-height: 36px;
+            height: 36px;
+            min-width: 120px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .search-button:hover {
+            box-shadow: 0 1px 1px rgba(0,0,0,.1);
+            background-color: #f8f9fa;
+            border: 1px solid #dadce0;
+            color: #202124;
+        }
+        .shortcuts h2 {
+            margin-bottom: 20px;
+            color: #5f6368;
+            font-size: 16px;
+            font-weight: normal;
+        }
+        .shortcut-button {
+            background-color: #e8eaed;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            color: #202124;
+            font-size: 14px;
+            margin: 11px 4px;
+            padding: 0 16px;
+            line-height: 27px;
+            height: 36px;
+            min-width: 54px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            margin-right: 20px;
+            font-weight: 500;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .shortcut-button:hover {
+            background-color: #dadce0;
+            border-color: #ccc;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .shortcut-button.primary {
+            background-color: #4285F4;
+            border: 1px solid #4285F4;
+            color: white;
+            font-weight: 500;
+        }
+        .shortcut-button.primary:hover {
+            background-color: #3367d6;
+            border-color: #3367d6;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        .new-label {
+            position: absolute;
+            top: -6px;
+            right: -15px;
+            color: #EA4335;
+            border-radius: 2px;
+            padding: 1px 3px;
+            font-size: 7px;
+            white-space: nowrap;
+            font-weight: bold;
+            line-height: normal;
+            text-transform: uppercase;
+            background: black;
+            letter-spacing: 0.2px;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        #travel-league-button {
+            position: relative;
+        }
+        .new-tag {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #ea4335;
+            color: white;
+            border-radius: 4px;
+            padding: 2px 5px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .coming-soon-tag {
+            position: absolute;
+            top: -6px;
+            right: -15px;
+            color: #EA4335;
+            border-radius: 2px;
+            padding: 1px 3px;
+            font-size: 7px;
+            white-space: nowrap;
+            font-weight: bold;
+            line-height: normal;
+            text-transform: uppercase;
+            background: black;
+            letter-spacing: 0.2px;
+            color: white;
+        }
+        .sub-policy, .price-table {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            background-color: white;
+            text-align: left;
+            display: none;
+        }
+        .sub-policy h3 {
+            color: #4285F4;
+            margin-top: 0;
+        }
+        .sub-policy p {
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        .sub-policy strong {
+            font-weight: bold;
+        }
+        .price-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .price-table th, .price-table td {
+            border: 1px solid #ddd;
+            padding: 12px 8px;
+            text-align: left;
+        }
+        .price-table th {
+            background-color: #4285F4;
+            color: white;
+            text-align: center;
+        }
+        .price-table td:last-child {
+            text-align: center;
+            font-weight: bold;
+        }
+        .price-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .player-count {
+            background-color: #4285F4;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            margin-left: 8px;
+            display: inline-block;
+        }
+
+        /* Registration Form Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .close-button {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: none; /* Hide all form groups initially */
+        }
+
+        .form-group.active {
+            display: block; /* Show active form groups */
+        }
+
+        .division-prompt {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .division-prompt.active {
+            display: block;
+        }
+
+        .prompt-buttons {
+            margin-top: 10px;
+        }
+
+        .prompt-buttons button {
+            margin-right: 10px;
+            padding: 5px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .yes-button {
+            background-color: #4285F4;
+            color: white;
+        }
+
+        .no-button {
+            background-color: #f1f3f4;
+            color: #3c4043;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #4285F4;
+            outline: none;
+        }
+
+        .required::after {
+            content: " *";
+            color: red;
+        }
+
+        .submit-button {
+            background-color: #4285F4;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .submit-button:hover {
+            background-color: #3367d6;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: space-between;
+        }
+
+        .cancel-button {
+            background-color: #f1f3f4;
+            color: #3c4043;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            flex: 0 1 35%;
+        }
+
+        .cancel-button:hover {
+            background-color: #e8eaed;
+        }
+
+        .submit-button {
+            flex: 0 1 60%;
+            margin-top: 0;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .partner-section {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .partner-section.active {
+            display: block;
+        }
+
+        .partner-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .partner-choice {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .partner-choice:hover {
+            background-color: #e8eaed;
+        }
+
+        .partner-choice input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .partner-choice input[type="radio"]:checked + label {
+            color: #4285F4;
+            font-weight: bold;
+        }
+
+        .partner-name-input {
+            margin-top: 10px;
+            padding-left: 25px;
+        }
+
+        .partner-name-input input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .partner-name-input input:focus {
+            border-color: #4285F4;
+            outline: none;
+        }
+
+        .partner-preferences {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e8f0fe;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .partner-preferences.active {
+            display: block;
+        }
+
+        .preference-checkbox {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .available-partners {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .available-partners.active {
+            display: block;
+        }
+
+        .partner-list {
+            margin-top: 10px;
+        }
+
+        .partner-item {
+            padding: 8px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .partner-item:last-child {
+            border-bottom: none;
+        }
+
+        .partner-info {
+            flex-grow: 1;
+        }
+
+        .partner-name {
+            font-weight: 500;
+            color: #202124;
+        }
+
+        .partner-rating {
+            color: #5f6368;
+            font-size: 0.9em;
+        }
+
+        .select-partner-btn {
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .select-partner-btn:hover {
+            background-color: #3367d6;
+        }
+
+        .no-partners-message {
+            color: #5f6368;
+            font-style: italic;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .gender-group {
+            margin-bottom: 15px;
+        }
+
+        .gender-options {
+            display: flex;
+            gap: 20px;
+            margin: 10px 0;
+        }
+
+        .gender-option {
+            flex: 1;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gender-option:hover {
+            background-color: #e8eaed;
+        }
+
+        .gender-option input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        .gender-option input[type="radio"]:checked + label {
+            color: #4285F4;
+            font-weight: bold;
+        }
+
+        .price-summary {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .price-summary h3 {
+            margin: 0 0 10px 0;
+            color: #202124;
+        }
+
+        .price-details {
+            margin-bottom: 10px;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            color: #5f6368;
+        }
+
+        .price-total {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e0e0e0;
+            font-weight: 500;
+            color: #202124;
+        }
+
+        .free-event-note {
+            color: #34a853;
+            font-style: italic;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .payment-content {
+            position: relative;
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .payment-header h2 {
+            color: #202124;
+            margin: 0 0 10px 0;
+        }
+
+        .payment-amount {
+            font-size: 24px;
+            color: #34a853;
+            font-weight: 500;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .payment-option {
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+
+        .payment-option h3 {
+            margin: 0 0 10px 0;
+            color: #202124;
+        }
+
+        .venmo-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #008CFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .venmo-button:hover {
+            background-color: #0073E6;
+        }
+
+        .venmo-button svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .qr-code-container {
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .qr-code-container img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .payment-note {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f0fe;
+            border-radius: 4px;
+            color: #1a73e8;
+            font-size: 0.9em;
+        }
+
+        .close-payment {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #5f6368;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 5px;
+        }
+
+        .close-payment:hover {
+            color: #202124;
+        }
+
+        /* Add admin-related styles */
+        .admin-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: transparent;
+            border: none;
+            color: #4285F4;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .admin-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        .admin-login-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .admin-console {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f5f5f5;
+            overflow-y: auto;
+        }
+
+        .admin-header {
+            background-color: #4285F4;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-nav {
+            background-color: white;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .admin-nav button {
+            margin-right: 10px;
+            padding: 8px 16px;
+            border: none;
+            background-color: #f1f3f4;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .admin-nav button.active {
+            background-color: #4285F4;
+            color: white;
+        }
+
+        .admin-content {
+            padding: 20px;
+        }
+
+        .participant-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .participant-table th,
+        .participant-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .participant-table th {
+            background-color: #f8f9fa;
+            font-weight: 500;
+        }
+
+        .edit-button {
+            padding: 4px 8px;
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .edit-button:hover {
+            background-color: #3367d6;
+        }
+
+        .logout-button {
+            padding: 8px 16px;
+            background-color: #ea4335;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .notification-modal {
+            max-width: 400px !important;
+            text-align: center;
+            padding: 30px !important;
+        }
+        
+        .notification-modal h2 {
+            color: #202124;
+            margin-bottom: 15px;
+        }
+        
+        .notification-modal p {
+            color: #5f6368;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        #notificationForm {
+            text-align: left;
+        }
+        
+        #notificationForm .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .success-message {
+            display: none;
+            color: #34A853;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+        .price-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4285F4;
+            padding: 12px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .price-promo {
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: normal;
+            color: #34A853;
+            line-height: 1.4;
+            padding: 8px;
+            background-color: #E6F4EA;
+            border-radius: 4px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .price-promo div {
+            margin: 4px 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .admin-nav {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .admin-nav button {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+        }
+
+        .admin-nav button.active {
+            color: #4285F4;
+            border-bottom: 2px solid #4285F4;
+        }
+
+        .division-filters {
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .filter-btn.active {
+            background: #4285F4;
+            color: white;
+            border-color: #4285F4;
+        }
+
+        .partner-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .partner-table th,
+        .partner-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .partner-table th {
+            background-color: #f8f9fa;
+            font-weight: 500;
+        }
+
+        .register-button {
+            background-color: #4285F4;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            flex: 0 1 35%;
+        }
+        .register-button:hover {
+            background-color: #3367d6;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button id="admin-login" class="admin-button">Admin Login</button>
+    </div>
+
+    <div class="main">
+        <div class="logo">
+            <span class="blue">N</span><span class="red">a</span><span class="yellow">p</span><span class="blue">e</span><span class="green">r</span><span class="red">v</span><span class="blue">i</span><span class="red">l</span><span class="yellow">l</span><span class="blue">e</span><span class="space">&nbsp;</span><span class="green">P</span><span class="red">i</span><span class="blue">c</span><span class="yellow">k</span><span class="red">l</span><span class="blue">e</span><span class="yellow">b</span><span class="blue">a</span><span class="yellow">l</span><span class="blue">l</span>
+        </div>
+
+
+        <div class="register-section">
+            <button class="shortcut-button primary" id="register-button">Register for June 28th Tournament</button>
+        </div>
+        
+        <div class="shortcuts">
+            <h2>Tournament Information</h2>
+            <button class="shortcut-button" id="divisions-button">Players Registered <span class="player-count">0</span></button>
+            <button class="shortcut-button" id="draws-button">Draws<span class="coming-soon-tag">Coming Soon</span></button>
+            <button class="shortcut-button" id="live-coverage-button">Live Coverage<span class="coming-soon-tag">Coming Soon</span></button>
+            <button class="shortcut-button" id="travel-league-button" onclick="showNotificationModal()">
+                    <span class="new-label">New</span>
+                    Naperville Travel and Competitive Leagues (July 7th onwards)</button>
+        </div>
+        
+        <div class="price-table" id="price-section">
+            <h3>Spring 2025 League Prices</h3>
+            <table>
+                <tr>
+                    <th>Membership Type</th>
+                    <th>Price</th>
+                </tr>
+                <tr>
+                    <td>NNPC Affiliate (2 Months unlimited Picklr + 2 Leagues + Free Tournament + NNPC Sub)</td>
+                    <td>149</td>
+                </tr>
+                <tr>
+                    <td>Individual League (Free Tournament - 1 Division + NNPC Sub)</td>
+                    <td>99</td>
+                </tr>
+                <tr>
+                    <td>Two Leagues (Free Tournament w. 2 Divisions + NNPC Sub)</td>
+                    <td>150</td>
+                </tr>
+                <tr>
+                    <td>Picklr Member (Per Pod) + Free Tournament + NNPC Sub</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td>Yearly Member (Per Pod) + Free Tournament + NNPC Sub = $25 [2 pod minimum]</td>
+                    <td>50</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="sub-policy" id="sub-policy-section">
+            <h3>2025 Sub Policy Update</h3>
+            <p>After careful consideration and multiple discussions, we have finalized the following decision: for all returning players this season, the $50 sub-policy fee from last season will be carried over and applied to this season.</p>
+            <p>Additionally, to provide greater clarity, please note that only players officially registered for <strong>NNPC Spring 2025 Leagues</strong> will be considered eligible substitutes.</p>
+            <p>To make finding substitutes easier and more efficient, we're introducing <strong>NNPC Genie</strong>—a Siri/Google-style assistant that will help automatically match you with available subs. More details about how to use it will be shared on the first day of the leagues.</p>
+            <p>Thank you for your understanding and continued support!</p>
+        </div>
+    </div>
+    
+    <!-- Registration Form Modal -->
+    <div id="registrationModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Tournament Registration</h2>
+            <form id="registrationForm">
+                <!-- Registration Form Fields -->
+                <!-- Full Name -->
+                <div class="form-group active">
+                    <label class="required" for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                    <div class="error-message" id="fullNameError">Please enter your full name</div>
+                </div>
+                <!-- Email Address -->
+                <div class="form-group active">
+                    <label class="required" for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+                <!-- Phone Number -->
+                <div class="form-group active">
+                    <label for="phone" class="required">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                    <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+                </div>
+                <!-- Gender Selection -->
+                <div class="form-group active">
+                    <label class="required">Gender</label>
+                    <div class="gender-options">
+                        <div class="gender-option">
+                            <input type="radio" id="male" name="gender" value="male" required>
+                            <label for="male">Male</label>
+                        </div>
+                        <div class="gender-option">
+                            <input type="radio" id="female" name="gender" value="female" required>
+                            <label for="female">Female</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="genderError">Please select your gender</div>
+                </div>
+                <!-- Self Rating -->
+                <div class="form-group active">
+                    <label for="selfRating" class="required">Self Rating</label>
+                    <select id="selfRating" name="selfRating" required>
+                        <option value="">Select your rating</option>
+                        <option value="Below 3.0">Below 3.0</option>
+                        <option value="3.0 - 3.5">3.0 - 3.5</option>
+                        <option value="3.5 - 4.0">3.5 - 4.0</option>
+                        <option value="4.0 - 4.5">4.0 - 4.5</option>
+                        <option value="4.5 - 5.0+">4.5 - 5.0+</option>
+                    </select>
+                    <div class="error-message" id="selfRatingError"></div>
+                </div>
+                <!-- Total Price Display -->
+                <div class="form-group active">
+                    <label>Total Registration Fee</label>
+                    <div class="price-display" id="totalPrice">$0.00</div>
+                </div>
+                <!-- Discount Code Input -->
+                <div class="form-group active">
+                    <label for="discountCode">Discount Code</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="text" id="discountCode" name="discountCode" placeholder="Enter code">
+                        <button type="button" id="applyDiscountBtn">Apply</button>
+                    </div>
+                    <div class="error-message" id="discountCodeError"></div>
+                </div>
+
+                <div class="form-group active" id="division1Group">
+                    <label for="division1">Division 1</label>
+                    <select id="division1" name="division1" onchange="handleDivisionChange(1)">
+                        <option value="">Select Division</option>
+                        <option value="coed-singles">Co-Ed Singles (8:00 AM)</option>
+                        <option value="womens-doubles">Women's Doubles (10:00 AM)</option>
+                        <option value="mixed-doubles">Mixed Doubles (1:00 PM)</option>
+                        <option value="mens-doubles">Men's Doubles (4:00 PM)</option>
+                        <option value="family-coed">Family Co-Ed Doubles (6:00 PM)</option>
+                    </select>
+                    <div class="partner-section" id="partner1Section">
+                        <div class="partner-options">
+                            <div class="partner-choice">
+                                <input type="radio" name="partner1Option" id="have1" value="have" onchange="togglePartnerInput(1)">
+                                <label for="have1">I have a partner</label>
+                                <div id="partner1NameInput" class="partner-name-input" style="display: none;">
+                                    <input type="text" placeholder="Enter your partner's full name" id="partner1Name">
+                                </div>
+                            </div>
+                            <div class="partner-choice">
+                                <input type="radio" name="partner1Option" id="need1" value="need" onchange="togglePartnerPreferences(1)">
+                                <label for="need1">I need a partner</label>
+                            </div>
+                        </div>
+                        <div class="partner-preferences" id="partner1Preferences">
+                            <p>I'm open to partnering in these divisions:</p>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref1_womens" name="pref1_womens" onchange="updatePartnerList(1)"> Women's Doubles
+                            </div>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref1_mixed" name="pref1_mixed" onchange="updatePartnerList(1)"> Mixed Doubles
+                            </div>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref1_mens" name="pref1_mens" onchange="updatePartnerList(1)"> Men's Doubles
+                            </div>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref1_family" name="pref1_family" onchange="updatePartnerList(1)"> Family Co-Ed Doubles
+                            </div>
+                            <div class="available-partners" id="availablePartners1">
+                                <h4>Available Partners</h4>
+                                <div class="partner-list" id="partnerList1">
+                                    <!-- Partner list will be populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="division-prompt" id="prompt1">
+                        Would you like to register for another division?
+                        <div class="prompt-buttons">
+                            <button type="button" class="yes-button" onclick="showNextDivision(1)">Yes</button>
+                            <button type="button" class="no-button" onclick="hidePrompt(1)">No</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="division2Group">
+                    <label for="division2">Division 2</label>
+                    <select id="division2" name="division2" onchange="handleDivisionChange(2)">
+                        <option value="">Select Division</option>
+                        <option value="coed-singles">Co-Ed Singles (8:00 AM)</option>
+                        <option value="womens-doubles">Women's Doubles (10:00 AM)</option>
+                        <option value="mixed-doubles">Mixed Doubles (1:00 PM)</option>
+                        <option value="mens-doubles">Men's Doubles (4:00 PM)</option>
+                        <option value="family-coed">Family Co-Ed Doubles (6:00 PM)</option>
+                    </select>
+                    <div class="partner-section" id="partner2Section">
+                        <div class="partner-options">
+                            <div class="partner-choice">
+                                <input type="radio" name="partner2Option" id="have2" value="have" onchange="togglePartnerInput(2)">
+                                <label for="have2">I have a partner</label>
+                                <div id="partner2NameInput" class="partner-name-input" style="display: none;">
+                                    <input type="text" placeholder="Enter your partner's full name" id="partner2Name">
+                                </div>
+                            </div>
+                            <div class="partner-choice">
+                                <input type="radio" name="partner2Option" id="need2" value="need" onchange="togglePartnerPreferences(2)">
+                                <label for="need2">I need a partner</label>
+                            </div>
+                        </div>
+                        <div class="partner-preferences" id="partner2Preferences">
+                            <p>I'm open to partnering in these divisions:</p>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref2_womens" name="pref2_womens" onchange="updatePartnerList(2)"> Women's Doubles
+                            </div>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref2_mixed" name="pref2_mixed" onchange="updatePartnerList(2)"> Mixed Doubles
+                            </div>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref2_mens" name="pref2_mens" onchange="updatePartnerList(2)"> Men's Doubles
+                            </div>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref2_family" name="pref2_family" onchange="updatePartnerList(2)"> Family Co-Ed Doubles
+                            </div>
+                            <div class="available-partners" id="availablePartners2">
+                                <h4>Available Partners</h4>
+                                <div class="partner-list" id="partnerList2">
+                                    <!-- Partner list will be populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="division-prompt" id="prompt2">
+                        Would you like to register for another division?
+                        <div class="prompt-buttons">
+                            <button type="button" class="yes-button" onclick="showNextDivision(2)">Yes</button>
+                            <button type="button" class="no-button" onclick="hidePrompt(2)">No</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="division3Group">
+                    <label for="division3">Division 3</label>
+                    <select id="division3" name="division3" onchange="handleDivisionChange(3)">
+                        <option value="">Select Division</option>
+                        <option value="coed-singles">Co-Ed Singles (8:00 AM)</option>
+                        <option value="womens-doubles">Women's Doubles (10:00 AM)</option>
+                        <option value="mixed-doubles">Mixed Doubles (1:00 PM)</option>
+                        <option value="mens-doubles">Men's Doubles (4:00 PM)</option>
+                        <option value="family-coed">Family Co-Ed Doubles (6:00 PM)</option>
+                    </select>
+                    <div class="partner-section" id="partner3Section">
+                        <div class="partner-options">
+                            <div class="partner-choice">
+                                <input type="radio" name="partner3Option" id="have3" value="have" onchange="togglePartnerInput(3)">
+                                <label for="have3">I have a partner</label>
+                                <div id="partner3NameInput" class="partner-name-input" style="display: none;">
+                                    <input type="text" placeholder="Enter your partner's full name" id="partner3Name">
+                                </div>
+                            </div>
+                            <div class="partner-choice">
+                                <input type="radio" name="partner3Option" id="need3" value="need" onchange="togglePartnerPreferences(3)">
+                                <label for="need3">I need a partner</label>
+                            </div>
+                        </div>
+                        <div class="partner-preferences" id="partner3Preferences">
+                            <p>I'm open to partnering in these divisions:</p>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref3_womens" name="pref3_womens" onchange="updatePartnerList(3)"> Women's Doubles
+                            </div>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref3_mixed" name="pref3_mixed" onchange="updatePartnerList(3)"> Mixed Doubles
+                            </div>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref3_mens" name="pref3_mens" onchange="updatePartnerList(3)"> Men's Doubles
+                            </div>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref3_family" name="pref3_family" onchange="updatePartnerList(3)"> Family Co-Ed Doubles
+                            </div>
+                            <div class="available-partners" id="availablePartners3">
+                                <h4>Available Partners</h4>
+                                <div class="partner-list" id="partnerList3">
+                                    <!-- Partner list will be populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="division-prompt" id="prompt3">
+                        Would you like to register for another division?
+                        <div class="prompt-buttons">
+                            <button type="button" class="yes-button" onclick="showNextDivision(3)">Yes</button>
+                            <button type="button" class="no-button" onclick="hidePrompt(3)">No</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="division4Group">
+                    <label for="division4">Division 4</label>
+                    <select id="division4" name="division4" onchange="handleDivisionChange(4)">
+                        <option value="">Select Division</option>
+                        <option value="coed-singles">Co-Ed Singles (8:00 AM)</option>
+                        <option value="womens-doubles">Women's Doubles (10:00 AM)</option>
+                        <option value="mixed-doubles">Mixed Doubles (1:00 PM)</option>
+                        <option value="mens-doubles">Men's Doubles (4:00 PM)</option>
+                        <option value="family-coed">Family Co-Ed Doubles (6:00 PM)</option>
+                    </select>
+                    <div class="partner-section" id="partner4Section">
+                        <div class="partner-options">
+                            <label>
+                                <input type="radio" name="partner4Option" value="have" onchange="togglePartnerInput(4)"> I have a partner
+                            </label>
+                            <div id="partner4NameInput" style="display: none;">
+                                <input type="text" placeholder="Partner's Full Name" id="partner4Name">
+                            </div>
+                            <label>
+                                <input type="radio" name="partner4Option" value="need" onchange="togglePartnerPreferences(4)"> I need a partner
+                            </label>
+                        </div>
+                        <div class="partner-preferences" id="partner4Preferences">
+                            <p>I'm open to partnering in these divisions:</p>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref4_womens" name="pref4_womens" onchange="updatePartnerList(4)"> Women's Doubles
+                            </div>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref4_mixed" name="pref4_mixed" onchange="updatePartnerList(4)"> Mixed Doubles
+                            </div>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref4_mens" name="pref4_mens" onchange="updatePartnerList(4)"> Men's Doubles
+                            </div>
+                            <div class="preference-checkbox">
+                                <input type="checkbox" id="pref4_family" name="pref4_family" onchange="updatePartnerList(4)"> Family Co-Ed Doubles
+                            </div>
+                            <div class="available-partners" id="availablePartners4">
+                                <h4>Available Partners</h4>
+                                <div class="partner-list" id="partnerList4">
+                                    <!-- Partner list will be populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="division-prompt" id="prompt4">
+                        Would you like to register for another division?
+                        <div class="prompt-buttons">
+                            <button type="button" class="yes-button" onclick="showNextDivision(4)">Yes</button>
+                            <button type="button" class="no-button" onclick="hidePrompt(4)">No</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Division 5</label>
+                    <select id="division5" name="division5" onchange="handleDivisionChange(5)">
+                        <option value="">Select Division</option>
+                        <option value="singles">Singles</option>
+                        <option value="womens-doubles">Women's Doubles</option>
+                        <option value="mixed-doubles">Mixed Doubles</option>
+                        <option value="mens-doubles">Men's Doubles</option>
+                        <option value="family-coed">Family Co-Ed Doubles</option>
+                    </select>
+                    <div class="error-message" id="division5Error"></div>
+                </div>
+
+                <div class="price-summary" id="priceSummary" style="display: none;">
+                    <h3>Price Summary</h3>
+                    <div class="price-details" id="priceDetails">
+                        <!-- Price details will be populated dynamically -->
+                    </div>
+                    <div class="price-total" id="priceTotal">
+                        <!-- Total price will be populated dynamically -->
+                    </div>
+                    <div class="free-event-note" id="freeEventNote" style="display: none;">
+                        Additional events are free of charge!
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="register-button">Register</button>
+                    <button type="button" class="cancel-button" onclick="cancelRegistration()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="payment-modal">
+        <div class="payment-content">
+            <button class="close-payment" onclick="closePaymentModal()">&times;</button>
+            <div class="payment-header">
+                <h2>Complete Your Registration</h2>
+                <p>Please complete your payment to finalize your registration</p>
+            </div>
+            <div class="payment-amount" id="paymentAmount">
+                <!-- Amount will be populated dynamically -->
+            </div>
+            <div class="payment-options">
+                <div class="payment-option">
+                    <h3>Pay with Venmo</h3>
+                    <p>Send payment to: @Sid-Harshavat</p>
+                    <a href="https://www.venmo.com/u/Sid-Harshavat" class="venmo-button" target="_blank">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M17.5 2.5c-1.5 0-2.5 1-2.5 2.5s1 2.5 2.5 2.5 2.5-1 2.5-2.5-1-2.5-2.5-2.5zm-11 0C5 2.5 4 3.5 4 5s1 2.5 2.5 2.5S9 6.5 9 5 8 2.5 6.5 2.5zm11 11c-1.5 0-2.5 1-2.5 2.5s1 2.5 2.5 2.5 2.5-1 2.5-2.5-1-2.5-2.5-2.5zm-11 0C5 13.5 4 14.5 4 16s1 2.5 2.5 2.5S9 17.5 9 16 8 13.5 6.5 13.5z"/>
+                        </svg>
+                        Pay with Venmo
+                    </a>
+                </div>
+                <div class="payment-option">
+                    <h3>Scan QR Code</h3>
+                    <div class="qr-code-container">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=venmo://paycharge?txn=pay&recipients=Sid-Harshavat&amount=60" alt="Venmo QR Code">
+                    </div>
+                    <p>Scan with your phone's camera to pay with Venmo</p>
+                </div>
+            </div>
+            <div class="payment-note">
+                <p><strong>Note:</strong> Please include your name and email in the payment note for verification.</p>
+                <p>Your registration will be confirmed once the payment is received.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="admin-modal">
+        <div class="admin-login-content">
+            <h2>Admin Login</h2>
+            <div style="margin: 20px 0;">
+                <input type="password" id="adminPassword" placeholder="Enter password" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+                <button onclick="loginAdmin()" style="width: 100%; padding: 8px; background-color: #4285F4; color: white; border: none; border-radius: 4px; cursor: pointer;">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Console -->
+    <div id="adminConsole" class="admin-console">
+        <div class="admin-header">
+            <h2>Admin Console</h2>
+            <button class="logout-button" onclick="logoutAdmin()">Logout</button>
+        </div>
+        <div class="admin-nav">
+            <button onclick="showParticipants()" class="active">Participants</button>
+            <button onclick="showPartners()">Partners</button>
+            <button onclick="showDiscountCodes()">Discount Codes</button>
+        </div>
+        <div class="admin-content">
+            <div id="participantsSection">
+                <table class="participant-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Rating</th>
+                            <th>Gender</th>
+                            <th>Divisions</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="participantsList">
+                        <!-- Will be populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="partnersSection" style="display: none;">
+                <div class="division-filters">
+                    <button class="filter-btn active" data-division="all">All Divisions</button>
+                    <button class="filter-btn" data-division="womens-doubles">Women's Doubles</button>
+                    <button class="filter-btn" data-division="mens-doubles">Men's Doubles</button>
+                    <button class="filter-btn" data-division="mixed-doubles">Mixed Doubles</button>
+                    <button class="filter-btn" data-division="family-coed">Family Co-Ed</button>
+                </div>
+                <table class="partner-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Rating</th>
+                            <th>Interested Divisions</th>
+                            <th>Contact</th>
+                        </tr>
+                    </thead>
+                    <tbody id="partnersList">
+                        <!-- Will be populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Modal -->
+    <div id="notificationModal" class="modal">
+        <div class="modal-content notification-modal">
+            <span class="close-button" onclick="closeNotificationModal()">&times;</span>
+            <h2>Stay Updated</h2>
+            <p>Provide your email to be notified when Travel and Competitive Leagues registration opens.</p>
+            <form id="notificationForm" onsubmit="submitNotification(event)">
+                <div class="form-group active">
+                    <label class="required" for="notificationEmail">Email Address</label>
+                    <input type="email" id="notificationEmail" name="notificationEmail" required>
+                    <div class="error-message" id="notificationEmailError">Please enter a valid email address</div>
+                </div>
+                <button type="submit" class="submit-button">Notify Me</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Console: Discount Code Management -->
+    <div id="discountCodesSection" style="display: none;">
+        <h2>Discount Code Management</h2>
+        <form id="createDiscountCodeForm" style="margin-bottom: 20px;">
+            <input type="text" id="newDiscountCode" placeholder="Code (auto-generated)" readonly style="width: 180px; margin-right: 10px;">
+            <input type="number" id="discountAmount" placeholder="Amount ($)" min="1" style="width: 100px; margin-right: 10px;">
+            <input type="number" id="discountMaxUses" placeholder="Max Uses" min="1" style="width: 100px; margin-right: 10px;">
+            <button type="submit">Create Code</button>
+        </form>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr><th>Code</th><th>Amount ($)</th><th>Max Uses</th><th>Used</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="discountCodesList"></tbody>
+        </table>
+    </div>
+
+    <script>
+        // Tournament knowledge base
+        const tournamentInfo = {
+            divisions: {
+                'coed-singles': {
+                    time: '8:00 AM',
+                    description: 'Open to all players regardless of gender',
+                    format: 'Round robin followed by single elimination'
+                },
+                'womens-doubles': {
+                    time: '10:00 AM',
+                    description: 'Female players only',
+                    format: 'Double elimination'
+                },
+                'mixed-doubles': {
+                    time: '1:00 PM',
+                    description: 'One male and one female player per team',
+                    format: 'Double elimination'
+                },
+                'mens-doubles': {
+                    time: '4:00 PM',
+                    description: 'Male players only',
+                    format: 'Double elimination'
+                },
+                'family-coed': {
+                    time: '6:00 PM',
+                    description: 'Family members or mixed gender pairs',
+                    format: 'Round robin'
+                }
+            },
+            rules: {
+                scoring: 'Games to 11 points, win by 2',
+                serving: 'Double bounce rule in effect',
+                kitchen: 'Non-volley zone rules apply',
+                referee: 'Self-refereed matches with court monitors for finals'
+            },
+            registration: {
+                deadline: 'June 27th',
+                cost: {
+                    firstDivision: 60,
+                    additionalDivision: 0
+                }
+            },
+            venue: {
+                name: 'Naperville Pickleball Club',
+                address: '1234 Pickleball Way, Naperville, IL 60540',
+                courts: '12 dedicated outdoor pickleball courts',
+                facilities: 'Restrooms, water fountains, covered seating areas'
+            }
+        };
+
+        // Tournament pricing
+        const pricing = {
+            firstEvent: 40,    // First event costs $40
+            secondEvent: 20,   // Second event adds $20 (total $60)
+            maxTotal: 60       // Maximum total price (additional events are free)
+        };
+
+        // Function to show registration modal
+        function showRegistrationModal() {
+            const modal = document.getElementById('registrationModal');
+            modal.style.display = 'block';
+
+            // Add event listener to close button
+            const closeButton = modal.querySelector('.close-button');
+            closeButton.onclick = function() {
+                modal.style.display = 'none';
+            };
+
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        }
+
+        // Function to cancel registration
+        function cancelRegistration() {
+            const modal = document.getElementById('registrationModal');
+            modal.style.display = 'none';
+            // Reset form
+            document.getElementById('registrationForm').reset();
+        }
+
+        // Function to format division names
+        function formatDivisionName(division) {
+            return division.split('-')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
+
+        // Function to validate email
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Function to validate phone number
+        function isValidPhone(phone) {
+            const re = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+            return re.test(phone);
+        }
+
+        // Function to calculate total price
+        function calculateTotalPrice() {
+            const divisions = [
+                document.getElementById('division1').value,
+                document.getElementById('division2').value,
+                document.getElementById('division3').value,
+                document.getElementById('division4').value,
+                document.getElementById('division5').value
+            ].filter(div => div !== ''); // Get only selected divisions
+
+            let total = 0;
+            if (divisions.length >= 1) total += pricing.firstEvent;      // First event: $40
+            if (divisions.length >= 2) total += pricing.secondEvent;     // Second event: +$20
+            // Additional events are free (total capped at $60)
+
+            // Always show the price display
+            const priceDisplay = document.getElementById('totalPrice');
+            priceDisplay.style.display = 'block';
+
+            // Update price display with promotional messages
+            if (divisions.length === 1) {
+                priceDisplay.innerHTML = `
+                    $${total.toFixed(2)}
+                    <div class="price-promo">
+                        <div>Add another event for just $20 more!</div>
+                        <div>Or register for all events for a fixed price of $60</div>
+                    </div>`;
+            } else if (divisions.length === 2) {
+                priceDisplay.innerHTML = `
+                    $${total.toFixed(2)}
+                    <div class="price-promo">
+                        <div>Add more events at no additional cost!</div>
+                    </div>`;
+            } else if (divisions.length > 2) {
+                priceDisplay.innerHTML = `
+                    $${total.toFixed(2)}
+                    <div class="price-promo">
+                        <div>Additional events are free!</div>
+                    </div>`;
+            } else {
+                priceDisplay.innerHTML = `$${total.toFixed(2)}`;
+            }
+
+            return total;
+        }
+
+        // Function to handle division change
+        function handleDivisionChange(divisionNumber) {
+            const division = document.getElementById(`division${divisionNumber}`).value;
+            const partnerSection = document.getElementById(`partner${divisionNumber}Section`);
+            const prompt = document.getElementById(`prompt${divisionNumber}`);
+            
+            // Hide/show partner section based on division type
+            if (division === 'coed-singles') {
+                partnerSection.style.display = 'none';
+            } else if (division) {
+                partnerSection.style.display = 'block';
+            } else {
+                partnerSection.style.display = 'none';
+            }
+
+            // Show prompt if division is selected
+            if (division) {
+                prompt.style.display = 'block';
+            } else {
+                prompt.style.display = 'none';
+            }
+
+            // Calculate and update total price
+            calculateTotalPrice();
+        }
+
+        // Function to toggle partner input
+        function togglePartnerInput(divisionNumber) {
+            const nameInput = document.getElementById(`partner${divisionNumber}NameInput`);
+            const preferences = document.getElementById(`partner${divisionNumber}Preferences`);
+            if (document.querySelector(`input[name="partner${divisionNumber}Option"]:checked`).value === 'have') {
+                nameInput.style.display = 'block';
+                preferences.style.display = 'none';
+            } else {
+                nameInput.style.display = 'none';
+                preferences.style.display = 'block';
+            }
+        }
+
+        // Function to toggle partner preferences
+        function togglePartnerPreferences(divisionNumber) {
+            const nameInput = document.getElementById(`partner${divisionNumber}NameInput`);
+            const preferences = document.getElementById(`partner${divisionNumber}Preferences`);
+            if (document.querySelector(`input[name="partner${divisionNumber}Option"]:checked`).value === 'need') {
+                nameInput.style.display = 'none';
+                preferences.style.display = 'block';
+            } else {
+                nameInput.style.display = 'block';
+                preferences.style.display = 'none';
+            }
+        }
+
+        // Function to show next division
+        function showNextDivision(currentDivision) {
+            const nextDivision = currentDivision + 1;
+            const nextGroup = document.getElementById(`division${nextDivision}Group`);
+            if (nextGroup) {
+                nextGroup.classList.add('active');
+                document.getElementById(`prompt${currentDivision}`).style.display = 'none';
+            }
+        }
+
+        // Function to hide prompt
+        function hidePrompt(divisionNumber) {
+            document.getElementById(`prompt${divisionNumber}`).style.display = 'none';
+        }
+
+        // Add admin functionality
+        const ADMIN_PASSWORD = 'Picklr';
+        
+        document.getElementById('admin-login').addEventListener('click', function() {
+            document.getElementById('adminLoginModal').style.display = 'block';
+        });
+
+        function loginAdmin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('adminLoginModal').style.display = 'none';
+                document.getElementById('adminConsole').style.display = 'block';
+                loadParticipants();
+            } else {
+                alert('Incorrect password');
+            }
+        }
+
+        function logoutAdmin() {
+            document.getElementById('adminConsole').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        async function loadParticipants() {
+            try {
+                const users = await getAllUsers();
+                const registrations = await getAllRegistrations();
+                
+                // Group registrations by user email
+                const userRegistrations = {};
+                registrations.forEach(reg => {
+                    if (!userRegistrations[reg.userEmail]) {
+                        userRegistrations[reg.userEmail] = [];
+                    }
+                    userRegistrations[reg.userEmail].push(reg);
+                });
+
+                // Populate table
+                const tbody = document.getElementById('participantsList');
+                tbody.innerHTML = users.map(user => {
+                    const userRegs = userRegistrations[user.email] || [];
+                    const divisions = userRegs.map(reg => reg.division).join(', ');
+                    
+                    return `
+                        <tr>
+                            <td>${user.name}</td>
+                            <td>${user.email}</td>
+                            <td>${user.phone}</td>
+                            <td>${user.rating}</td>
+                            <td>${user.gender}</td>
+                            <td>${divisions}</td>
+                            <td>
+                                <button class="edit-button" onclick="editParticipant('${user.email}')">Edit</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading participants:', error);
+                alert('Error loading participants');
+            }
+        }
+
+        async function editParticipant(email) {
+            try {
+                const user = await getUser(email);
+                const registrations = await getRegistrationsByUser(email);
+                
+                // Create edit form
+                const editContent = `
+                    <div style="padding: 20px;">
+                        <h3>Edit Participant</h3>
+                        <form id="editParticipantForm">
+                            <div style="margin-bottom: 15px;">
+                                <label>Name:</label>
+                                <input type="text" id="editName" value="${user.name}" style="width: 100%; padding: 8px;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label>Email:</label>
+                                <input type="email" id="editEmail" value="${user.email}" style="width: 100%; padding: 8px;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label>Phone:</label>
+                                <input type="tel" id="editPhone" value="${user.phone}" style="width: 100%; padding: 8px;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label>Rating:</label>
+                                <select id="editRating" style="width: 100%; padding: 8px;">
+                                    <option value="Below 3.0" ${user.rating === 'Below 3.0' ? 'selected' : ''}>Below 3.0</option>
+                                    <option value="3.0 - 3.5" ${user.rating === '3.0 - 3.5' ? 'selected' : ''}>3.0 - 3.5</option>
+                                    <option value="3.5 - 4.0" ${user.rating === '3.5 - 4.0' ? 'selected' : ''}>3.5 - 4.0</option>
+                                    <option value="4.0 - 4.5" ${user.rating === '4.0 - 4.5' ? 'selected' : ''}>4.0 - 4.5</option>
+                                    <option value="4.5 - 5.0+" ${user.rating === '4.5 - 5.0+' ? 'selected' : ''}>4.5 - 5.0+</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label>Gender:</label>
+                                <select id="editGender" style="width: 100%; padding: 8px;">
+                                    <option value="male" ${user.gender === 'male' ? 'selected' : ''}>Male</option>
+                                    <option value="female" ${user.gender === 'female' ? 'selected' : ''}>Female</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label>Divisions:</label>
+                                <div id="editDivisions" style="margin-top: 10px;">
+                                    ${['coed-singles', 'womens-doubles', 'mixed-doubles', 'mens-doubles', 'family-coed']
+                                        .map(div => `
+                                            <div style="margin-bottom: 5px;">
+                                                <input type="checkbox" id="edit_${div}" 
+                                                    ${registrations.some(r => r.division === div) ? 'checked' : ''}>
+                                                <label for="edit_${div}">${formatDivisionName(div)}</label>
+                                            </div>
+                                        `).join('')}
+                                </div>
+                            </div>
+                            <button type="submit" style="background-color: #4285F4; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">
+                                Save Changes
+                            </button>
+                        </form>
+                    </div>
+                `;
+
+                // Show edit form in a modal
+                const editModal = document.createElement('div');
+                editModal.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    max-width: 500px;
+                    width: 90%;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                `;
+                editModal.innerHTML = editContent;
+                document.body.appendChild(editModal);
+
+                // Handle form submission
+                const form = document.getElementById('editParticipantForm');
+                form.onsubmit = async (e) => {
+                    e.preventDefault();
+                    
+                    // Update user data
+                    const updatedUser = {
+                        name: document.getElementById('editName').value,
+                        email: document.getElementById('editEmail').value,
+                        phone: document.getElementById('editPhone').value,
+                        rating: document.getElementById('editRating').value,
+                        gender: document.getElementById('editGender').value
+                    };
+
+                    // Update divisions
+                    const updatedDivisions = ['coed-singles', 'womens-doubles', 'mixed-doubles', 'mens-doubles', 'family-coed']
+                        .filter(div => document.getElementById(`edit_${div}`).checked);
+
+                    try {
+                        // Save user changes
+                        await saveUser(updatedUser);
+
+                        // Update registrations
+                        // First, remove all existing registrations
+                        await removeUserRegistrations(email);
+
+                        // Then add new registrations
+                        for (const division of updatedDivisions) {
+                            await saveRegistration({
+                                userEmail: updatedUser.email,
+                                division: division,
+                                registrationDate: new Date().toISOString()
+                            });
+                        }
+
+                        // Refresh participants list
+                        await loadParticipants();
+                        
+                        // Remove modal
+                        document.body.removeChild(editModal);
+                    } catch (error) {
+                        console.error('Error updating participant:', error);
+                        alert('Error updating participant');
+                    }
+                };
+            } catch (error) {
+                console.error('Error editing participant:', error);
+                alert('Error editing participant');
+            }
+        }
+
+        // Helper function to remove user registrations
+        async function removeUserRegistrations(email) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['registrations'], 'readwrite');
+                const store = transaction.objectStore('registrations');
+                const index = store.index('userEmail');
+                const request = index.getAll(email);
+
+                request.onsuccess = async () => {
+                    const registrations = request.result;
+                    for (const reg of registrations) {
+                        await new Promise((res, rej) => {
+                            const deleteRequest = store.delete(reg.id);
+                            deleteRequest.onsuccess = () => res();
+                            deleteRequest.onerror = () => rej(deleteRequest.error);
+                        });
+                    }
+                    resolve();
+                };
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // Function to show partners section
+        function showPartners() {
+            document.getElementById('participantsSection').style.display = 'none';
+            document.getElementById('partnersSection').style.display = 'block';
+            document.querySelectorAll('.admin-nav button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.admin-nav button:nth-child(2)').classList.add('active');
+            loadPartners('all');
+        }
+
+        // Function to show participants section
+        function showParticipants() {
+            document.getElementById('partnersSection').style.display = 'none';
+            document.getElementById('participantsSection').style.display = 'block';
+            document.querySelectorAll('.admin-nav button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.admin-nav button:first-child').classList.add('active');
+            loadParticipants();
+        }
+
+        // Add gender validation to form submission
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(error => error.style.display = 'none');
+            
+            let isValid = true;
+            
+            // Validate required fields
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const gender = document.querySelector('input[name="gender"]:checked')?.value;
+            
+            if (!fullName) {
+                document.getElementById('fullNameError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!email || !isValidEmail(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!phone || !isValidPhone(phone)) {
+                document.getElementById('phoneError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (!gender) {
+                document.getElementById('genderError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Proceed with form submission
+                // ... existing form submission logic ...
+            }
+        });
+
+        function showNotificationModal() {
+            const modal = document.getElementById('notificationModal');
+            modal.style.display = 'block';
+            
+            // Reset form and error messages
+            document.getElementById('notificationForm').reset();
+            document.getElementById('notificationEmailError').style.display = 'none';
+        }
+        
+        function closeNotificationModal() {
+            const modal = document.getElementById('notificationModal');
+            modal.style.display = 'none';
+        }
+        
+        function submitNotification(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('notificationEmail').value;
+            const errorElement = document.getElementById('notificationEmailError');
+            
+            // Validate email
+            if (!isValidEmail(email)) {
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            // Here you would typically send the email to your backend
+            // For now, we'll just show a success message
+            const form = document.getElementById('notificationForm');
+            form.innerHTML = '<div class="success-message" style="display: block;">Thank you! We\'ll notify you when registration opens.</div>';
+            
+            // Close the modal after 2 seconds
+            setTimeout(() => {
+                closeNotificationModal();
+                // Reset the form back to original state after modal is closed
+                setTimeout(() => {
+                    form.innerHTML = `
+                        <div class="form-group active">
+                            <label class="required" for="notificationEmail">Email Address</label>
+                            <input type="email" id="notificationEmail" name="notificationEmail" required>
+                            <div class="error-message" id="notificationEmailError">Please enter a valid email address</div>
+                        </div>
+                        <button type="submit" class="submit-button">Notify Me</button>
+                    `;
+                }, 500);
+            }, 2000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const notificationModal = document.getElementById('notificationModal');
+            if (event.target == notificationModal) {
+                closeNotificationModal();
+            }
+        }
+
+        // Function to load partners
+        async function loadPartners(division) {
+            try {
+                const users = await getAllUsers();
+                const registrations = await getAllRegistrations();
+                
+                // Filter users who need partners
+                const partnersNeeded = registrations
+                    .filter(reg => reg.needsPartner)
+                    .map(reg => {
+                        const user = users.find(u => u.email === reg.userEmail);
+                        return {
+                            name: user.name,
+                            gender: user.gender,
+                            rating: user.rating,
+                            email: user.email,
+                            phone: user.phone,
+                            division: reg.division,
+                            preferences: reg.partnerPreferences || []
+                        };
+                    });
+
+                // Filter by division if specified
+                const filteredPartners = division === 'all' 
+                    ? partnersNeeded 
+                    : partnersNeeded.filter(p => p.division === division);
+
+                // Update active filter button
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.division === division);
+                });
+
+                // Populate table
+                const tbody = document.getElementById('partnersList');
+                tbody.innerHTML = filteredPartners.map(partner => `
+                    <tr>
+                        <td>${partner.name}</td>
+                        <td>${partner.gender}</td>
+                        <td>${partner.rating}</td>
+                        <td>${partner.preferences.map(formatDivisionName).join(', ')}</td>
+                        <td>
+                            <div>Email: ${partner.email}</div>
+                            <div>Phone: ${partner.phone}</div>
+                        </td>
+                    </tr>
+                `).join('');
+
+                if (filteredPartners.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 20px;">
+                                No partner requests found for ${division === 'all' ? 'any division' : formatDivisionName(division)}
+                            </td>
+                        </tr>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading partners:', error);
+                alert('Error loading partner requests');
+            }
+        }
+
+        // Add click handlers for filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => loadPartners(btn.dataset.division));
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded');
+            
+            // Add form submission handler
+            const form = document.getElementById('registrationForm');
+            if (!form) {
+                console.error('Registration form not found');
+                return;
+            }
+
+            console.log('Adding form submission handler');
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                console.log('Form submitted');
+                
+                // Get form data
+                const formData = new FormData(this);
+                const userData = {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    rating: formData.get('selfRating'),
+                    gender: formData.get('gender')
+                };
+
+                console.log('User data:', userData);
+
+                // Get selected divisions
+                const divisions = [];
+                for (let i = 1; i <= 5; i++) {
+                    const division = document.getElementById(`division${i}`).value;
+                    if (division) {
+                        divisions.push(division);
+                    }
+                }
+
+                console.log('Selected divisions:', divisions);
+
+                // Validate required fields
+                if (!userData.name || !userData.email || !userData.phone || !userData.rating || !userData.gender) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+
+                if (divisions.length === 0) {
+                    alert('Please select at least one division');
+                    return;
+                }
+
+                try {
+                    // Send registration email
+                    const emailSent = await sendRegistrationEmail(userData, divisions);
+                    
+                    if (emailSent) {
+                        alert('Registration successful! A confirmation email has been sent to your email address.');
+                        // Close the registration modal
+                        document.getElementById('registrationModal').style.display = 'none';
+                        // Reset the form
+                        this.reset();
+                    } else {
+                        alert('Registration successful! However, there was an error sending the confirmation email.');
+                    }
+                } catch (error) {
+                    console.error('Error during registration:', error);
+                    alert('There was an error processing your registration. Please try again.');
+                }
+            });
+
+            // Add division change handlers
+            for (let i = 1; i <= 5; i++) {
+                const divisionSelect = document.getElementById(`division${i}`);
+                if (divisionSelect) {
+                    divisionSelect.addEventListener('change', function() {
+                        handleDivisionChange(i);
+                    });
+                }
+            }
+
+            // Add click handler for register button
+            const registerButton = document.querySelector('.register-btn');
+            if (registerButton) {
+                registerButton.addEventListener('click', function() {
+                    console.log('Register button clicked');
+                    const form = document.getElementById('registrationForm');
+                    if (form) {
+                        form.dispatchEvent(new Event('submit'));
+                    } else {
+                        console.error('Registration form not found');
+                    }
+                });
+            } else {
+                console.error('Register button not found');
+            }
+
+            // Attach event listener for register button
+            var regBtn = document.getElementById('register-button');
+            if (regBtn) {
+                regBtn.addEventListener('click', showRegistrationModal);
+            }
+        });
+
+        // --- Pre-registered Players List ---
+        const preRegisteredPlayers = [
+          { name: "Jamie Rubenstein", phone: "312-493-6572", email: "jamiewrubenstein@gmail.com" },
+          { name: "Kim Anderson", phone: "630-712-9811", email: "Kimanderson93@gmail.com" },
+          { name: "Meredith Pollack", phone: "630-774-9888", email: "merptri@gmail.com" },
+          { name: "Shannon Battaglia", phone: "312-339-2984", email: "shannonbattaglia@me.com" },
+          { name: "Cindy Giles", phone: "630-212-2514", email: "Cindygiles10@gmail.com" },
+          { name: "Jen Goss", phone: "312-502-6702", email: "jennifergoss1@comcast.net" },
+          { name: "Stephanie Jenness", phone: "630-605-0011", email: "Sajenness23@yahoo.com" },
+          { name: "Ed Pollack", phone: "630-606-7580", email: "empollack@hotmail.com" },
+          { name: "Mandy Loh", phone: "630-699-4939", email: "tim.mandy.loh@gmail.com" },
+          { name: "Lindsay Pawlik", phone: "773-951-8597", email: "lindsay.pawlik@gmail.com" },
+          { name: "Janna Koo", phone: "651-235-2017", email: "jannazang@gmail.com" },
+          { name: "Ali Albright", phone: "281-785-2208", email: "balisonalbright@gmail.com" },
+          { name: "Emilee Paroubek", phone: "414-335-1838", email: "eparoubek@gmail.com" },
+          { name: "Mia Rubinstein", phone: "630-258-9357", email: "Lifestylehomes@gmail.com" },
+          { name: "Ashley Jackson", phone: "760-219-9435", email: "Ashleyjackson@gmail.com" },
+          { name: "Jen Applegate", phone: "847-951-3914", email: "jennyapplegate@hotmail.com" },
+          { name: "Julia Homan", phone: "219-805-9548", email: "Johannadjuliahoman@yahoo.com" },
+          { name: "Nicole Cavanagh", phone: "630-234-4381", email: "Ncavanagh013075@yahoo.com" },
+          { name: "Martha Skryd", phone: "630-945-8013", email: "marthas@astound.net" },
+          { name: "Caroline Buckley", phone: "", email: "" },
+          { name: "Helen Gee", phone: "630-915-3708", email: "hlgee1@yahoo.com" },
+          { name: "Beth Olsen", phone: "630-269-0358", email: "Olson55@sbcglobal.net" },
+          { name: "Kristin Bilik", phone: "630-660-5930", email: "thebiliks@yahoo.com" },
+          { name: "Raghu Jagadam", phone: "(630) 779-5894", email: "rjagadam@gmail.com" },
+          { name: "Jeff Yu", phone: "630-544-8887", email: "Jeffyusekya@gmail.com" },
+          { name: "Travis Atkinson", phone: "630-992-7764", email: "travi85@yahoo.com" },
+          { name: "Navid Sonal", phone: "630-464-7844", email: "navid.sohal@yahoo.com" },
+          { name: "Matt Wolski", phone: "312-286-0329", email: "matthew.wolski@gmail.com" },
+          { name: "Alisha Waters", phone: "614-804-3071", email: "awaters32@gmail.com" },
+          { name: "Zach Bell", phone: "618-660-7455", email: "bell5201@hotmail.com" },
+          { name: "Veronica Gordon", phone: "847-404-2986", email: "veronicaschoenbauer@hotmail.com" },
+          { name: "Bharat Nagpal", phone: "(312) 771-8872", email: "bharatnagpal@gmail.com" },
+          { name: "Debby Freeman", phone: "630-464-5468", email: "attydkf@hotmail.com" },
+          { name: "Janet Beyer", phone: "6306368727", email: "jebeyer8@gmail.com" },
+          { name: "Derek Luangrath", phone: "", email: "derek630@gmail.com" },
+          { name: "Anthony Schullo", phone: "6392589128", email: "aschullo1801@icloud.com" },
+          { name: "Marisue Trevino", phone: "630.918.0110", email: "mst@ariescharter.com" },
+          { name: "Seema Goel", phone: "5123004545", email: "seemagoel16@yahoo.com" },
+          { name: "Lory Bryant", phone: "630-915-1559", email: "designl5a@yahoo.com" },
+          { name: "Lori Kelley", phone: "630-710-3037", email: "kelclan5@gmail.com" },
+          { name: "Stacey Abe", phone: "312-497-5432", email: "stacey.abe59@gmail.com" },
+          { name: "Cathy Hopkins", phone: "847-903-5373", email: "Hopkins6@astound.net" },
+          { name: "Karen George", phone: "630-881-6011", email: "klgeorge1@hotmail.com" },
+          { name: "Gina Cuttia", phone: "630-558-5511", email: "cuttgar@att.net" },
+          { name: "Cindy Meier", phone: "630-558-8218", email: "meiercindy@aol.com" },
+          { name: "Christian Kacedan", phone: "617-905-4496", email: "cmpcape@aol.com" },
+          { name: "Jay Kelly", phone: "630-730-7892", email: "kelclan5@gmail.com" },
+          { name: "Erin Grant", phone: "319-621-1778", email: "erin.leigh81188@gmail.com" },
+          { name: "Sarah Cameron", phone: "630-710-7725", email: "sarahpkelley@gmail.com" },
+          { name: "Jess Sheets", phone: "217-317-9367", email: "Jbear0830@gmail.com" },
+          { name: "Mike Sheets", phone: "630-301-1844", email: "Sheetsmich@gmail.com" },
+          { name: "Jake Meszaros", phone: "312-989-6744", email: "jpmesz07@gmail.com" },
+          { name: "Lindsay Meszaros", phone: "917-471-1905", email: "lindsey.meszaros@gmail.com" },
+          { name: "Divya", phone: "(815) 668-3166", email: "Djiodivya@gmail.com" },
+          { name: "Thanujia Natesa", phone: "847 828 0862", email: "thanujia@gmail.com" },
+          { name: "Tracy Durns", phone: "630-777-4406", email: "tracycdurns@outlook.com" },
+          { name: "Ontario Durns", phone: "630-777-4404", email: "odurns01@outlook.com" },
+          { name: "Raji Amar", phone: "630-383-9689", email: "rdraajs@gmail.com" },
+          { name: "Jyoti", phone: "(773) 531-1894", email: "jyoti_mishra15@hotmail.com" },
+          { name: "Zoheb", phone: "(312) 420-0731", email: "zohebab@gmail.com" },
+          { name: "Girish Patel", phone: "8478407248", email: "girish_patel01@yahoo.com" },
+          { name: "Prashant", phone: "(630) 946-3959", email: "Prashantbasety@gmail.com" },
+          { name: "Tom", phone: "773 332 2345", email: "naperrpickleball@gmail.com" },
+          { name: "Spencer", phone: "(303) 408-9511", email: "waterssa11@gmail.com" }
+        ];
+
+        // --- Auto-fill logic for registration form ---
+        document.getElementById('fullName').addEventListener('input', function() {
+            const inputName = this.value.trim().toLowerCase();
+            const match = preRegisteredPlayers.find(player => player.name.trim().toLowerCase() === inputName);
+            if (match) {
+                document.getElementById('email').value = match.email;
+                document.getElementById('phone').value = match.phone;
+            }
+        });
+
+        // --- Function to update player count on the front page ---
+        function updatePlayerCount() {
+            // Get the count of unique players (by name) from preRegisteredPlayers and any new registrations
+            let count = preRegisteredPlayers.length;
+            // If you have a separate array or DB for new registrations, add their count here as well
+            // For now, we assume all are in preRegisteredPlayers
+            document.querySelector('.player-count').textContent = count;
+        }
+
+        // Update player count on page load
+        updatePlayerCount();
+
+        // If you add new registrations elsewhere in the code, call updatePlayerCount() after adding.
+    </script>
+</body>
+</html>
